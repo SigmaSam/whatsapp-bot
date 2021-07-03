@@ -20,6 +20,7 @@ const withSession = () => {
     client.on('ready',() => {
         console.log(' Client is ready!');
         spinner.stop();
+        listenMessage();
     });
 
     client.on('auth_failure', () => {
@@ -50,5 +51,26 @@ const withOutSession = () => {
     });
     client.initialize();
 }
+
+/*Message Listener */
+
+const listenMessage = () => {
+    client.on('message', (msg)=> {
+        const { from, to, body } = msg;
+
+        /* User Input */
+        switch(body) {
+            case 'Hola':
+                sendMessage(from, 'Hola somos Baumes, como podemos ayudarte?\n Para ver nuestro catalogo escribe *Catalogo*.\n Para atencion personal escribe *Che guacho dame bola*'); 
+        }
+       
+    })
+}
+
+/*Message Sender */
+const sendMessage = (to, message) => {
+    client.sendMessage(to, message)
+}
+
 (fs.existsSync(SESSION_FILE_PATH)) ? withSession() : withOutSession();
  
